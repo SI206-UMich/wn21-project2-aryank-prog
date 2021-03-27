@@ -118,8 +118,12 @@ def write_csv(data, filename):
 
     This function should not return anything.
     """
-    pass
-
+    csvfile = open(filename, "w", newline='')
+    obj = csv.writer(csvfile)
+    obj.writerow(("Book Title", "Author Name"))
+    for row in data:
+        obj.writerow(row)
+    csvfile.close()
 
 def extra_credit(filepath):
     """
@@ -128,7 +132,17 @@ def extra_credit(filepath):
     Please see the instructions document for more information on how to complete this function.
     You do not have to write test cases for this function.
     """
-    pass
+    soup = BeautifulSoup(filepath, "html.parser")
+    div = soup.find("div", class_="readable stacked")
+    span = div.find("span", id="freeText5694431710404641553")
+    text = span.find_all("br")
+    regex = r"[A-Z]\w{2,}\s{1}[A-Z]\w{1,}"
+    lst = []
+    for section in text:
+        temp = re.findall(regex, section.text)
+        for item in temp:
+            lst.append(item)
+    return lst     
 
 class TestCases(unittest.TestCase):
 
